@@ -1,0 +1,62 @@
+<html>
+    <head>
+        <link rel="stylesheet"
+            href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/zepto/1.1.6/zepto.min.js"
+            ></script>
+
+        <style>
+            .pure-g > div {
+                -webket-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            .l-box {
+                padding: 1em;
+            }
+            .text {
+                background: #eee;
+                border-left: 4px solid #999;
+                padding: 0.5em;
+            }
+            .html {
+                padding: 0.5em;
+            }
+            #console {
+                border-top: 2px dashed #ccc;
+                border-bottom: 2px dashed #999;
+                padding-top: 1em;
+                padding-bottom: 1em;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="pure-g">
+            <div class="pure-u-1-1 l-box">
+                <div id="console"></div>
+            </div>
+        </div>
+
+        <script type='text/javascript;version=1.7'>
+            "use strict";
+
+            let init = function() {
+                let el = $("#console");
+                let sock = new WebSocket('ws://localhost:9160');
+                sock.onmessage = function (event) {
+                    let ev = JSON.parse(event.data),
+                        result;
+
+                    if (ev.type === 'Text')
+                        result = "<div class='text'>" + ev.data + "</div>";
+                    else if (ev.type === 'HTML')
+                        result = "<div class='html'>" + ev.data + "</div>";
+
+                    el.prepend(result);
+                };
+            };
+
+            init();
+        </script>
+    </body>
+</html>
